@@ -1,0 +1,17 @@
+# Ignore upload and runtime artifact directories
+uploads/
+
+# PHP environment and dependency files
+.env
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Node/npm
+node_modules/
+
+# Python cache if any
+__pycache__/
+*.py[cod]
