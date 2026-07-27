@@ -1,0 +1,78 @@
+# Scottish Mammal Observations — Project README
+
+This document explains how to set up and run the `ScottlandMammals1` PHP web app locally (Windows). It includes commands I ran and common troubleshooting steps.
+
+---
+
+## Project structure (important files)
+- `index.php` — homepage that lists species
+- `species.php` — species detail page (uses `?key=`)
+- `includes/config.php` — DB constants (`DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`)
+- `includes/db.php` — PDO connection helper (`getDbConnection()`)
+- `database/scottish_mammals.sql` — main SQL dump to import
+- `css/`, `js/`, `images/`, `uploads/` — static assets
+
+## Prerequisites
+- PHP (CLI) installed and on PATH (you have PHP 8.3)
+- MySQL Server binaries installed (we used MySQL Server 8.4)
+
+## Quick setup (what I did)
+
+1. Prepare MySQL data directory (avoid writing to Program Files):
+
+```cmd
+mkdir C:\mysql\data
+cd "C:\Program Files\MySQL\MySQL Server 8.4\bin"
+mysqld --initialize-insecure --basedir="C:\Program Files\MySQL\MySQL Server 8.4" --datadir="C:\mysql\data"
+```
+
+2. Start MySQL server (keep this terminal open while developing):
+
+```cmd
+cd "C:\Program Files\MySQL\MySQL Server 8.4\bin"
+mysqld --console --basedir="C:\Program Files\MySQL\MySQL Server 8.4" --datadir="C:\mysql\data"
+```
+
+3. Import the database dump:
+
+```cmd
+cd "C:\Program Files\MySQL\MySQL Server 8.4\bin"
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS scottish_mammals;"
+mysql -u root scottish_mammals < "C:\Users\SONY\Downloads\40808156\ScottlandMammals1\database\scottish_mammals.sql"
+```
+
+4. Start the PHP development server (in the project folder):
+
+```cmd
+cd "C:\Users\SONY\Downloads\40808156\ScottlandMammals1"
+php -S localhost:8000
+```
+
+5. Open the site in a browser:
+
+```
+http://localhost:8000
+```
+
+## Database credentials
+- The app uses `includes/config.php`. Default used during setup:
+  - `DB_HOST = 'localhost'`
+  - `DB_NAME = 'scottish_mammals'`
+  - `DB_USER = 'root'`
+  - `DB_PASS = ''` (empty)
+
+If your MySQL uses different credentials, update `includes/config.php` accordingly.
+
+## Troubleshooting
+- Error `No connection could be made`: MySQL not running on port 3306 — start `mysqld`.
+- `Permission denied` during `--initialize`: run the command as Administrator or use a non-protected `--datadir` (we used `C:\mysql\data`).
+- Blank pages or PHP errors: enable error display in `php.ini`, or view the PHP server console output.
+
+## Next steps / suggestions
+- If you prefer an easier developer stack, install XAMPP/WAMP and copy the project to `C:\xampp\htdocs\ScottlandMammals1`.
+- Add `.env` style config and avoid committing credentials.
+- If you'd like, I can produce a short walkthrough video or take screenshots of the site running.
+
+---
+
+If you want adjustments (more details, sections for deployment, or a printable PDF), tell me what to include and I'll update this file.
